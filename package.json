@@ -1,0 +1,15 @@
+{
+  "name": "chaiaurbackend_hc",
+  "version": "1.0.0",
+  "description": "a backend from hc",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Js",
+    "backend"
+  ],
+  "author": "Shrishti",
+  "license": "ISC"
+}
