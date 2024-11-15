@@ -1,0 +1,5 @@
+This file is not necessary for our workflow. But we want to push it na keep a track of it.
+
+We created this just coz there cant be empty folder pushed into the github i.e, public/temp.
+
+After creating this file, check "git status" in terminal.
