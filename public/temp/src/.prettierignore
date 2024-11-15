@@ -1,0 +1,9 @@
+# in which files I dont wanna ignore prettier
+*.env
+.env
+.env*
+/.vscode
+/node_modules
+./dist
+
+# prettier will not affect these above files 

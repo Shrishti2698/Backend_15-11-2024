@@ -2,14 +2,19 @@
   "name": "chaiaurbackend_hc",
   "version": "1.0.0",
   "description": "a backend from hc",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon src/index.js"
   },
   "keywords": [
     "Js",
     "backend"
   ],
   "author": "Shrishti",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.7",
+    "prettier": "^3.3.3"
+  }
 }
