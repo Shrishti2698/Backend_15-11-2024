@@ -1,0 +1,2 @@
+export const DB_NAME = "videotube" // wrote databse name and exported it so that we dont have to change it in many places in future
+// we haven't put it in .env because it's not that sensitive info. Just a name of the database
