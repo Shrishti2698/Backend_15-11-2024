@@ -10,6 +10,21 @@ dotenv.config({  // after importing, also needs to be configured
 })
 // after this above code, "npm run dev" ("dev" 'coz be dev dependency we wrote in package.json)
 connectDB()
+// PROMISES --> .then .catch
+.then(() => {
+   app.on("error", (error) => { // we want to listen to errors, before we listen to app.listen()
+      console.log("ERROR", error);
+      throw error
+    }),
+
+    app.listen(process.env.PORT || 8000, () => {
+      console.log(` Server is running at PORT ${process.env.PORT}`);
+    }) // if our port is not found then use 8000
+})
+.catch((err) => {
+   console.log("MONGO db connection failed!! ", err);
+   
+})
 
 
 
