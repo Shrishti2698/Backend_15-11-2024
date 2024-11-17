@@ -38,7 +38,7 @@ const videoSchema = new Schema (
     }, { timestamps: true })
 
 
-videoSchema.plugin(mongooseAggregatePaginate)  // we add the middlewares with plugins
+videoSchema.plugin(mongooseAggregatePaginate)  // we add the middlewares, plugins
 // go to "mongoose" documentation-> middleware -> pre, post etc.
 // pre - do something just before the data is going to be saved
 // post - --;;-- just after the data has been saved

@@ -52,10 +52,12 @@ const userSchema = new Schema(  // refer hc's Eraser.io (link:- hc's Github -> M
 
 
 userSchema.pre("save", async function (next) {
-   this.password = bcrypt.hash(this.password, 10) 
-   next()  // take password field. encrypt it and save it
+    if(!this.isModified("password")) return next(); // checking if password is not modified, then hato yaha se..
+           
+    this.password = bcrypt.hash(this.password, 10)   // if modified, then make these changes and go to next()
+   next()  // take password field. Encrypt it and save it
 })  // mongoose documentation-> middleware (hooks)
-// using pre hook just before "saving" the data
+// using pre hook - changes, just before "saving" the data
 // async - 'coz it takes time
 // next - to pass this flag forward. 
 // function() - is a callback
@@ -63,5 +65,16 @@ userSchema.pre("save", async function (next) {
 // becryt - to encrypt
 // hash(this.password) ko hash kardo!
 // 10 is a hashround
+
+// HERE IS A PROBLEM:- EVERYTIME USER CHANGES SOMETHING (SAT, AVATAR, PHOTO ETC) THE PASSWORD WILL ALSO CHANGE AS IT'S A PRE HOOK
+// pre hook has access of password
+// Instead we want, when we want to modify password field then only it gets changed!
+// we don't want password to be encrypted everytime
+
+userSchema.methods.isPasswordCorrect = async function(password){  // mongoose documentation-> methods. Checking if the database password matches w the users password or not
+   return await bcrypt.compare(password, this.password) // logic how password is checked
+   // compare - returns true or false
+}
+
 
 export const User = mongoose.model('User', userSchema)
