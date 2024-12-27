@@ -28,7 +28,8 @@ const asyncHandler = (fun) => async (req, res, next) => {  // HoF function
     // STARTING wrapper (try catch)
     try{
         await fun(req, res, next)
-    } catch (error) {
+    } 
+    catch (error) {
         res.status(err.code || 500).json({   // when user is passing the error otherwise pass 500
         success: false, // "success" flag so that it would be easier for frontend devs
         message: err.message
@@ -36,6 +37,3 @@ const asyncHandler = (fun) => async (req, res, next) => {  // HoF function
     }
 }
   */  
-    
-
-

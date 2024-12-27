@@ -19,5 +19,5 @@ const connectDB = async () => {
 }
 
 export default connectDB
-
+ 
 // import this into src-> index.js

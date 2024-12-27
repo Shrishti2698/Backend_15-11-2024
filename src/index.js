@@ -6,24 +6,23 @@ import {DB_NAME} from "./constant.js";
 import connectDB from "./db/index.js";
 
 dotenv.config({  // after importing, also needs to be configured
-    path: './env'
+    path: './env'  // then go to package.json--> "scripts"
 })
 // after this above code, "npm run dev" ("dev" 'coz be dev dependency we wrote in package.json)
 connectDB()
-// PROMISES --> .then .catch
-.then(() => {
+// PROMISES --> .then .catch (Db-> index.js file is returning )
+.then(() => { // database is connected! But obvio, we also want it to listen to the database
    app.on("error", (error) => { // we want to listen to errors, before we listen to app.listen()
       console.log("ERROR", error);
       throw error
     }),
 
-    app.listen(process.env.PORT || 8000, () => {
+    app.listen(process.env.PORT || 8000, () => {  // database is connected! But obvio, we also want it to listen to the database
       console.log(` Server is running at PORT ${process.env.PORT}`);
     }) // if our port is not found then use 8000
 })
 .catch((err) => {
    console.log("MONGO db connection failed!! ", err);
-   
 })
 
 
@@ -55,6 +54,7 @@ const app = express()
          throw error
        }) // on() is a listner. .on("error") is one type of listner. We've connected database but maybe express app is not able to communicate
 
+       // 05:09:..
        app.listen(process.env.PORT, () => {
           console.log(`App is listening on port ${process.env.PORT}`);
        })

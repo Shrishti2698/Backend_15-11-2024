@@ -3,6 +3,6 @@ class ApiResponse {
        this.statusCode = statusCode
        this.data = data
        this.message = message
-       this.success = statusCode < 400 // search, surver status code
+       this.success = statusCode < 400 // search, surver status code; not a hard n fast rule but we've set it for outselves only
     }
 }

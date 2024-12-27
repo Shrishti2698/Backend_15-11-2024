@@ -41,7 +41,7 @@ const userSchema = new Schema(  // refer hc's Eraser.io (link:- hc's Github -> M
         ],
         password: {
             type: String, // String - a trick here. For encryption purpose
-            required: [true, "Password is required"]
+            required: [true, "Password is required"] // we can write "Password is required" with "true"
         },
         refershtocken: {
             type: String,
@@ -51,10 +51,12 @@ const userSchema = new Schema(  // refer hc's Eraser.io (link:- hc's Github -> M
 )
 
 
-userSchema.pre("save", async function (next) {
-    if(!this.isModified("password")) return next(); // checking if password is not modified, then hato yaha se..
-           
+userSchema.pre("save", async function (next) { // direct encryption isn't possible. We need some hooks (eg- pre hook)
+    if(!this.isModified("password")) return next(); // checking if password is not modified, then hato yaha se.. Only runs when the password has been modified, not everytime!  
+    // aboveline- sara password feild lo, encrypt karke save kardo.    
+    // next()- we then have to call next after the work has been done, i.e, our work is done now, pass the call to "next"   
     this.password = bcrypt.hash(this.password, 10)   // if modified, then make these changes and go to next()
+    // this.password - this is what we want to hash
    next()  // take password field. Encrypt it and save it
 })  // mongoose documentation-> middleware (hooks)
 // using pre hook - changes, just before "saving" the data
@@ -64,17 +66,50 @@ userSchema.pre("save", async function (next) {
 
 // becryt - to encrypt
 // hash(this.password) ko hash kardo!
-// 10 is a hashround
+// 10 is a hashround. Itne rounds lagao, to save password!
 
-// HERE IS A PROBLEM:- EVERYTIME USER CHANGES SOMETHING (SAT, AVATAR, PHOTO ETC) THE PASSWORD WILL ALSO CHANGE AS IT'S A PRE HOOK
+// HERE IS A PROBLEM:- EVERYTIME USER CHANGES SOMETHING (SAT, AVATAR, PHOTO ETC) THE PASSWORD WILL ALSO CHANGE AS IT'S A PRE HOOK - that's y we've used if()
 // pre hook has access of password
 // Instead we want, when we want to modify password field then only it gets changed!
 // we don't want password to be encrypted everytime
 
-userSchema.methods.isPasswordCorrect = async function(password){  // mongoose documentation-> methods. Checking if the database password matches w the users password or not
+ 
+// 6:52:00
+userSchema.methods.isPasswordCorrect = async function(password){  // mongoose documentation-> methods. (an object) Checking if the database password matches w the users password or not
    return await bcrypt.compare(password, this.password) // logic how password is checked
    // compare - returns true or false
+   // becrypt can hash awa check if the passwoed is correct or not
 }
 
+// Both, .methods and pre has access of the password (which is in the database)
+
+userSchema.methods.generateAccessToken = function(){
+   return jwt.sign( // this is how token is generated
+        {
+            _id: this._id, // _id, we'll get from mongodb
+            email: this.email,
+            username: this.username,
+            fullName: this.fullName, 
+            // all these are payload
+        },
+        process.env.ACCESS_TOKEN_SECRET,
+        {
+            expiresIn: process.env.ACCESS_TOKEN_EXPIRY
+        }
+    )
+}
+userSchema.methods.generateRefreshToken = function(){  // refresh token has comparitively less info than access token
+    return jwt.sign( // this is how token is generated
+        {
+            _id: this._id, // _id, we'll get from mongodb 
+            // all these are payload
+        },
+        process.env.REFRESH_TOKEN_SECRET,
+        {
+            expiresIn: process.env.REFRESH_TOKEN_EXPIRY
+        }
+    )
+}
+// both are JWT tokens- only usage difference!
 
 export const User = mongoose.model('User', userSchema)
