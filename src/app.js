@@ -23,6 +23,20 @@ app.use(express.static("public")) // nothing but a public folder/assets, any one
 app.use(cookieParser())
 
 
+// routes import
+import userRouter from "./routes/user.routes.js";
+
+
+// routes declaration
+// ab "app.get()" se kaam ni bnega, as everything's is in different folder now. 
+// Now we have to use Middleware "app.use"
+app.use("/api/v1/users", userRouter)     // after "/api/v1/users", userRouter will be activated
+// this is how the control will be passed to userRouter and there, will perform task
+// "/users" will be treated as prefix. URL will be created as -
+// http://localhost:8000/api/v1/users/register we'll write, erite it in user.routes.js
+
+
+
 
 export { app } // our previous way
 

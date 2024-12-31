@@ -13,8 +13,8 @@ class APIError extends Error {
         this.errors = errors
 
         // 06:08:40
-        if(statck) {
-            this.stack = statck        
+        if(stack) {
+            this.stack = stack        
         } 
         else {
             Error.captureStackTrace(this, this.constructor) // In StackTrace, we've passed the instance, in which context we're talking about
