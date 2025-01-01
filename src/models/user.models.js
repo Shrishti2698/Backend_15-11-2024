@@ -55,7 +55,7 @@ userSchema.pre("save", async function (next) { // direct encryption isn't possib
     if(!this.isModified("password")) return next(); // checking if password is not modified, then hato yaha se.. Only runs when the password has been modified, not everytime!  
     // aboveline- sara password feild lo, encrypt karke save kardo.    
     // next()- we then have to call next after the work has been done, i.e, our work is done now, pass the call to "next"   
-    this.password = bcrypt.hash(this.password, 10)   // if modified, then make these changes and go to next()
+    this.password = await bcrypt.hash(this.password, 10)   // if modified, then make these changes and go to next()
     // this.password - this is what we want to hash
    next()  // take password field. Encrypt it and save it
 })  // mongoose documentation-> middleware (hooks)
@@ -112,4 +112,4 @@ userSchema.methods.generateRefreshToken = function(){  // refresh token has comp
 }
 // both are JWT tokens- only usage difference!
 
-export const User = mongoose.model('User', userSchema)
+export const User = mongoose.model('User', userSchema)  // this "User" can directly contact database 'coz it is created by mongoose (and we'll use this at many places)
