@@ -30,7 +30,7 @@ cloudinary.config({
         })
         // file has been uploaded successfull
         //console.log("file is uploaded on cloudinary ", response.url);  // we'll get public url after file has been uploaded
-        fs.unlinkSync(localFilePath) // unlinking/deleting file after 
+        fs.unlinkSync(localFilePath) // unlinking/deleting file after (last step ofthe video)
         return response;  // we're sending response; user will get the data they want from "response" (eg: response.data)
 
     } catch (error) {  // we're using cloudinary that means file is in the server, we have got the local path file, and if it is not uploaded then there is problem. So for a safe cleaning purpose we should remove the file from the server (otherwise millesious/curupted files would still remain in the server)

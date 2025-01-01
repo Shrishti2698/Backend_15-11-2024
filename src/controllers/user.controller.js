@@ -38,7 +38,7 @@ const registerUser = asyncHandler(async (req, res) => {
             throw new ApiError(400, "All fields are required")   // VALIDATION done
         }
 
-       const existedUser =  User.findOne({
+       const existedUser = await User.findOne({
             $or: [{ username }, { email }]  // 9:05:54
         }) // find or findOne
 
@@ -47,12 +47,23 @@ const registerUser = asyncHandler(async (req, res) => {
             throw new ApiError(409, "User with email or username already exist");  // this is y ApiError is a helper file
         }
 
+      console.log(req.files);
+      
+
+
         // now we want to check images and avatar images
         const avatarLocalPath = req.files?.avatar[0]?.path   // avatar same as user.routes.js's "avatar"
         // [0].path means jo bhi path multer has uploaded, uski 1st property se hume mil jyega path
         console.log(req.body);
 
         const coverImageLocalPath = req.files?.coverImage[0]?.path
+
+
+        let coverImageLocalPath;  // we wrote a condition to check for avatar but not for coverImage, that's y we wrote this
+        if(req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0) {  // checking coverImage is array or not and length>0 or not
+          coverImageLocalPath = req.files.coverImage[0].path
+        }
+
 
         // check krna hoga aya h ya nhi
         if(!avatarLocalPath) {
@@ -61,7 +72,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
         // now we'll upload both the files(above) in Cloudinary
         const avatar = await uploadOncloudinary(avatarLocalPath) // takes time to upload
-        const coverImage = await uploadOncloudinary(coverImageLocalPath)
+        const coverImage = await uploadOncloudinary(coverImageLocalPath)  // if we didn't get coverImageLocalPath, then cloudianry doesn't throw error it simply returns empty string
 
         // again checking avatar is uploaded or not as it is required field. And if not uploaded then DB will crash !!
         if(!avatar) {

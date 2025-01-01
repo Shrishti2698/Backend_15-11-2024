@@ -6,7 +6,7 @@ import {DB_NAME} from "./constant.js";
 import connectDB from "./db/index.js";
 
 dotenv.config({  // after importing, also needs to be configured
-    path: './env'  // then go to package.json--> "scripts"
+    path: './.env'  // then go to package.json--> "scripts"
 })
 // after this above code, "npm run dev" ("dev" 'coz be dev dependency we wrote in package.json)
 connectDB()
